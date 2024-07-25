@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@scalar/hono-api-reference": "latest",
+    "@purista/hono-http-server": "latest"
+  },
+  "devDependencies": {},
+  "trustedDependencies": []
+}
