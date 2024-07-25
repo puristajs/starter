@@ -4,10 +4,16 @@
   "engines": {
     "node": ">=18"
   },
+  "scripts": {
+    "add:service": "purista add service",
+    "add:command": "purista add command",
+    "add:subscription": "purista add subscription"
+  },
   "dependencies": {
     "@purista/core": "latest"
   },
   "devDependencies": {
+    "@purista/cli": "latest",
     "@types/node": "latest",
     "typescript": "latest",
     "sinon": "latest"
