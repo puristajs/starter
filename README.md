@@ -2,8 +2,29 @@
 
 PURISTA starter templates.
 
-They are not intend to be used directly. The templates are used by the CLI and installer.
+They are not intend to be used directly. The templates are used by the installer.
 
+```sh
+npm create purista
+```
+
+**OR with Bun**
+
+```sh
+bun create purista
+```
+
+**OR with pnpm**
+
+```sh
+yarn create purista
+```
+
+**OR with pnpm**
+
+```sh
+pnpm create purista
+```
 
 ---
 
