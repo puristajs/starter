@@ -11,8 +11,10 @@ export const getHttpServer = async (input: {
 }) => {
 	const honoService = await honoV1Service.getInstance(input.eventBridge, {
 		logger: input.logger,
-		serviceConfig: { ...httpConfig, services: input.services },
+		serviceConfig: { ...httpConfig.serviceConfig, services: input.services },
 	})
+
+	// provide the OpenAPI UI
 	honoService.app.get(
 		httpConfig.serviceConfig.apiMountPath,
 		apiReference({
@@ -22,15 +24,20 @@ export const getHttpServer = async (input: {
 			},
 		}),
 	)
+
+	// provide static files from public directory
 	honoService.app.get('*', serveStatic({ root: httpConfig.root }))
+
+	// add a server to the OpenAPI spec for local development purposes. This is useful when you want to test your API locally without deploying it to a production environment.
 	honoService.openApi.addServer({
 		url: `http://localhost:${httpConfig.port}`,
 		description: 'the local server',
 	})
 
-	// start the webserver
+	// start the webserver service
 	await honoService.start()
 
+	// start listening on given port - use Bun's native HTTP server for better performance and lower resource usage.
 	const serverInstance = Bun.serve({
 		fetch: honoService.app.fetch,
 		port: httpConfig.port,

@@ -3,35 +3,43 @@ import { serveStatic } from '@hono/node-server/serve-static'
 import type { EventBridge, Logger, Service } from '@purista/core'
 import { honoV1Service } from '@purista/hono-http-server'
 import { apiReference } from '@scalar/hono-api-reference'
+import httpConfig from './config/http.js'
 
 export const getHttpServer = async (input: {
 	eventBridge: EventBridge
 	logger: Logger
 	services: Service[]
-	port: number
 }) => {
 	const honoService = await honoV1Service.getInstance(input.eventBridge, {
 		logger: input.logger,
-		serviceConfig: { services: input.services, enableDynamicRoutes: true },
+		serviceConfig: { ...httpConfig.serviceConfig, services: input.services },
 	})
+
+	// provide the OpenAPI UI
 	honoService.app.get(
-		'/api',
+		httpConfig.serviceConfig.apiMountPath,
 		apiReference({
-			pageTitle: 'PURISTA API',
+			pageTitle: httpConfig.serviceConfig.openApi.info.title,
 			spec: {
-				url: '/api/openapi.json',
+				url: `${httpConfig.serviceConfig.apiMountPath}/openapi.json`,
 			},
 		}),
 	)
-	honoService.app.get('*', serveStatic({ root: './public' }))
-	honoService.openApi.addServer({ url: `http://localhost:${input.port}`, description: 'the local server' })
 
-	// start the webserver
+	// provide static files from public directory
+	honoService.app.get('*', serveStatic({ root: httpConfig.root }))
+
+	// add a server to the OpenAPI spec for local development purposes.
+	// This is useful when you want to test your API locally without deploying it to a production environment.
+	honoService.openApi.addServer({ url: `http://localhost:${httpConfig.port}`, description: 'the local server' })
+
+	// start the webserver service
 	await honoService.start()
 
+	// start listening on given port - use hono node.js adapter
 	const serverInstance = serve({
 		fetch: honoService.app.fetch,
-		port: input.port,
+		port: httpConfig.port,
 	})
 
 	return { honoService, serverInstance }
