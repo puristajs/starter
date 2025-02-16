@@ -1,7 +1,7 @@
 {
-  "dependencies": {
-    "@purista/natsbridge": "latest"
-  },
-  "devDependencies": {},
-  "trustedDependencies": []
+	"dependencies": {
+		"@purista/natsbridge": "latest"
+	},
+	"devDependencies": {},
+	"trustedDependencies": []
 }

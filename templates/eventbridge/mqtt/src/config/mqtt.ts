@@ -1,7 +1,7 @@
-import type { MqttBridgeConfig } from "@purista/mqttbridge";
+import type { MqttBridgeConfig } from '@purista/mqttbridge'
 
 const mqttBridgeConfig: Partial<MqttBridgeConfig> = {
-  host: "localhost",
-};
+	host: 'localhost',
+}
 
-export default mqttBridgeConfig;
+export default mqttBridgeConfig

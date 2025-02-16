@@ -1,0 +1,23 @@
+{
+	"name": "starter",
+	"version": "1.0.0",
+	"private": true,
+	"description": "The starter template files for a new PURISTA project",
+	"scripts": {
+		"lint": "bunx @biomejs/biome check",
+		"lint:fix": "bunx @biomejs/biome check --write"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/puristajs/starter.git"
+	},
+	"author": "Sebastian Wessel",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/puristajs/starter/issues"
+	},
+	"homepage": "https://purista.dev",
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4"
+	}
+}

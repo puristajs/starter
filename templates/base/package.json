@@ -1,21 +1,23 @@
 {
-  "version": "1.0.0",
-  "type": "module",
-  "engines": {
-    "node": ">=18"
-  },
-  "scripts": {
-    "add:service": "purista add service",
-    "add:command": "purista add command",
-    "add:subscription": "purista add subscription"
-  },
-  "dependencies": {
-    "@purista/core": "latest"
-  },
-  "devDependencies": {
-    "@purista/cli": "latest",
-    "@types/node": "latest",
-    "typescript": "latest",
-    "sinon": "latest"
-  }
+	"version": "1.0.0",
+	"type": "module",
+	"engines": {
+		"node": ">=18"
+	},
+	"scripts": {
+		"add:service": "purista add service",
+		"add:command": "purista add command",
+		"add:subscription": "purista add subscription"
+	},
+	"dependencies": {
+		"@purista/core": "latest"
+	},
+	"devDependencies": {
+		"@purista/cli": "latest",
+		"@types/node": "latest",
+		"@types/sinon": "latest",
+		"@types/jest": "latest",
+		"typescript": "latest",
+		"sinon": "latest"
+	}
 }
