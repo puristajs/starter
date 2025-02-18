@@ -9,7 +9,11 @@ export const main = async () => {
 
 	const services: Service[] = []
 
-	const { honoService, serverInstance } = await getHttpServer({ logger, eventBridge, services, port: 3000 })
+	const { honoService, serverInstance } = await getHttpServer({
+		logger,
+		eventBridge,
+		services,
+	})
 
 	// try to shut down as clean as possible
 	gracefulShutdown(logger, [

@@ -1,6 +1,6 @@
 import type { HonoServiceV1ConfigPartial } from '@purista/hono-http-server'
 
-const serviceConfig: HonoServiceV1ConfigPartial = {
+const serviceConfig = {
 	enableDynamicRoutes: true,
 	enableHealth: true,
 	apiMountPath: '/api',
@@ -10,7 +10,7 @@ const serviceConfig: HonoServiceV1ConfigPartial = {
 			title: 'PURISTA API',
 		},
 	},
-}
+} satisfies HonoServiceV1ConfigPartial
 
 const httpConfig = {
 	port: 3000,
