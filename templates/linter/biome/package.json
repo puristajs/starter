@@ -7,5 +7,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "latest"
 	},
-	"trustedDependencies": ["@biomejs/biome"]
+	"trustedDependencies": [
+		"@biomejs/biome"
+	]
 }
