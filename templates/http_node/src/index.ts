@@ -1,4 +1,4 @@
-import { type Service, gracefulShutdown, initLogger } from '@purista/core'
+import { gracefulShutdown, initLogger, type Service } from '@purista/core'
 import { getEventBridge } from './eventbridge.js'
 import { getHttpServer } from './http.js'
 
@@ -23,7 +23,15 @@ export const main = async () => {
 		{
 			name: `${honoService.serviceInfo.serviceName} ${honoService.serviceInfo.serviceVersion} close socket`,
 			destroy: async () => {
-				serverInstance.close()
+				await new Promise<void>((resolve, reject) => {
+					serverInstance.close(error => {
+						if (error) {
+							reject(error)
+							return
+						}
+						resolve()
+					})
+				})
 			},
 		},
 		honoService,

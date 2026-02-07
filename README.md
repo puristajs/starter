@@ -2,7 +2,7 @@
 
 PURISTA starter templates.
 
-They are not intend to be used directly. The templates are used by the installer.
+They are not intended to be used directly. The templates are consumed by `create-purista`.
 
 ```sh
 npm create purista

@@ -1,4 +1,4 @@
-import { type Service, gracefulShutdown, initLogger } from '@purista/core'
+import { gracefulShutdown, initLogger, type Service } from '@purista/core'
 import { getEventBridge } from './eventbridge.js'
 
 export const main = async () => {
