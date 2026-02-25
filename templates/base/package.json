@@ -5,18 +5,25 @@
 		"node": ">=18"
 	},
 	"scripts": {
+		"start": "tsx src/index.ts",
+		"test": "tsc --noEmit && vitest",
 		"add:service": "purista add service",
 		"add:command": "purista add command",
 		"add:subscription": "purista add subscription"
 	},
 	"dependencies": {
-		"@purista/core": "latest"
+		"@hono/node-server": "latest",
+		"@purista/core": "latest",
+		"@purista/hono-http-server": "latest",
+		"zod": "latest"
 	},
 	"devDependencies": {
 		"@purista/cli": "latest",
 		"@types/node": "latest",
 		"@types/sinon": "latest",
+		"sinon": "latest",
+		"tsx": "latest",
 		"typescript": "latest",
-		"sinon": "latest"
+		"vitest": "latest"
 	}
 }
