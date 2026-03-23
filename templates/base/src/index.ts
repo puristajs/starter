@@ -1,4 +1,4 @@
-import { gracefulShutdown, initLogger, type Service } from '@purista/core'
+import { type Service, gracefulShutdown, initLogger } from '@purista/core'
 import { getEventBridge } from './eventbridge.js'
 import { pingV1Service } from './service/ping/v1/index.js'
 
