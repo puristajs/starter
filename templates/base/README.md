@@ -10,6 +10,13 @@ Run `npm start` (or `pnpm start`, etc.) to boot the DefaultEventBridge, start th
 
 The official documentation can be found at **[purista.dev](https://purista.dev)**.
 
+## Reliability defaults in this template
+
+- queue workers start conservatively (`sequential`, `prefetch: 1`) for predictable local behavior
+- queue retries are bounded and dead-lettered automatically once retry budget/window is exhausted
+- startup validation is strict for requested broker guarantees, so unsupported semantics fail fast
+- you can explicitly dead-letter from workers with `context.job.moveToDeadLetter(reason?)`
+
 You can install the PURISTA CLI globally:
 
 ```sh
