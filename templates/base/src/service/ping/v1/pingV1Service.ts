@@ -1,8 +1,8 @@
 import { pingCommandBuilder } from './command/ping/pingCommandBuilder.js'
 import { pingAsyncCommandBuilder } from './command/pingAsync/pingAsyncCommandBuilder.js'
 import { pingV1ServiceBuilder } from './pingV1ServiceBuilder.js'
-import { pingJobWorkerQueueWorkerBuilder } from './queue-worker/pingJobWorker/pingJobWorkerQueueWorkerBuilder.js'
 import { pingJobQueueBuilder } from './queue/pingJob/pingJobQueueBuilder.js'
+import { pingJobWorkerQueueWorkerBuilder } from './queue-worker/pingJobWorker/pingJobWorkerQueueWorkerBuilder.js'
 import { logSubscriptionBuilder } from './subscription/log/logSubscriptionBuilder.js'
 
 // bring service config definition, command definitions and subscription definitions together in the service

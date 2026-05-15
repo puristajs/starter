@@ -1,4 +1,4 @@
-import { DefaultQueueBridge, type Service, gracefulShutdown, initLogger } from '@purista/core'
+import { DefaultQueueBridge, gracefulShutdown, initLogger, type Service } from '@purista/core'
 import { getEventBridge } from './eventbridge.js'
 import { getHttpServer } from './http.js'
 import { pingV1Service } from './service/ping/v1/index.js'

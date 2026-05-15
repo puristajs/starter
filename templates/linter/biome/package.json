@@ -7,7 +7,9 @@
 	"devDependencies": {
 		"@biomejs/biome": "latest"
 	},
-	"trustedDependencies": ["@biomejs/biome"],
+	"trustedDependencies": [
+		"@biomejs/biome"
+	],
 	"engines": {
 		"node": ">=24.15.0"
 	}
