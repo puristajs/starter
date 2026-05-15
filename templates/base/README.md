@@ -31,6 +31,9 @@ In the root of this project:
 - run `purista add command` to add additional commands to an existing service
 - run `purista add subscription` to react to additional events
 - run `purista add queue` whenever you need another pull-based worker
+- run `npm run export:asyncapi`, `npm run export:schedules`, or `npm run export:runtime` to export provider-neutral integration metadata
+
+The template wires `DefaultEventBridge` and `DefaultQueueBridge` separately. This keeps the generated app compatible with PURISTA deployments that later replace either bridge with AMQP, NATS, Redis, Dapr, or another adapter.
 
 ---
 

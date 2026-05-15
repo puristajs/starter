@@ -2,11 +2,14 @@
 	"version": "1.0.0",
 	"type": "module",
 	"engines": {
-		"node": ">=18"
+		"node": ">=24.15.0"
 	},
 	"scripts": {
 		"start": "tsx src/index.ts",
 		"test": "tsc --noEmit && vitest",
+		"export:asyncapi": "purista export asyncapi --out asyncapi.json",
+		"export:schedules": "purista export schedule-manifest --out schedules.json",
+		"export:runtime": "purista export runtime-capabilities --out purista-runtime.json",
 		"add:service": "purista add service",
 		"add:command": "purista add command",
 		"add:subscription": "purista add subscription"

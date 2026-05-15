@@ -4,5 +4,8 @@
 		"@purista/hono-http-server": "latest"
 	},
 	"devDependencies": {},
-	"trustedDependencies": []
+	"trustedDependencies": [],
+	"engines": {
+		"node": ">=24.15.0"
+	}
 }
