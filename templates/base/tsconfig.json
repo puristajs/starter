@@ -24,7 +24,6 @@
 		"useUnknownInCatchVariables": true,
 		"types": ["node"]
 	},
-	"include": ["./src/index.ts"],
-	"files": ["src/index.ts"],
+	"include": ["src/**/*.ts"],
 	"exclude": ["node_modules", "dist"]
 }

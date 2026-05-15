@@ -1,4 +1,7 @@
-/**
- * The global enum which should contain all known events for all services
- */
-export const ServiceEvent = {} as const
+export const ServiceEvent = {
+	/**
+	 * Emitted by ping v1 command ping:
+	 * the ping command exposed as http endpoint
+	 */
+	Pinged: 'pinged',
+} as const

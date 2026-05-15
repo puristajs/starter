@@ -1,8 +1,21 @@
 # PURISTA Application
 
-Welcome to your PURISTA based application.
+Welcome to your PURISTA based application. The template already contains a `ping` service with
+
+- a synchronous `POST /api/v1/ping` command
+- an asynchronous `POST /api/v1/ping/async` command that enqueues work
+- a queue (`pingJob`) plus worker processing jobs sequentially
+
+Run `npm start` (or `pnpm start`, etc.) to boot the DefaultEventBridge, start the ping service, and expose the HTTP endpoints through the Hono HTTP server (if you selected it during scaffolding).
 
 The official documentation can be found at **[purista.dev](https://purista.dev)**.
+
+## Reliability defaults in this template
+
+- queue workers start conservatively (`sequential`, `prefetch: 1`) for predictable local behavior
+- queue retries are bounded and dead-lettered automatically once retry budget/window is exhausted
+- startup validation is strict for requested broker guarantees, so unsupported semantics fail fast
+- you can explicitly dead-letter from workers with `context.job.moveToDeadLetter(reason?)`
 
 You can install the PURISTA CLI globally:
 
@@ -14,9 +27,13 @@ Or run it with `npx @purista/cli`.
 
 In the root of this project:
 
-- run `purista add service` to add a new service
-- run `purista add command` to add a new command to an existing service
-- run `purista add subscription` to add a new subscription to an existing service
+- run `purista add service` to add another service
+- run `purista add command` to add additional commands to an existing service
+- run `purista add subscription` to react to additional events
+- run `purista add queue` whenever you need another pull-based worker
+- run `npm run export:asyncapi`, `npm run export:schedules`, or `npm run export:runtime` to export provider-neutral integration metadata
+
+The template wires `DefaultEventBridge` and `DefaultQueueBridge` separately. This keeps the generated app compatible with PURISTA deployments that later replace either bridge with AMQP, NATS, Redis, Dapr, or another adapter.
 
 ---
 

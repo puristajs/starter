@@ -18,6 +18,9 @@
 	},
 	"homepage": "https://purista.dev",
 	"devDependencies": {
-		"@biomejs/biome": "^2.3.14"
+		"@biomejs/biome": "^2.4.15"
+	},
+	"engines": {
+		"node": ">=24.15.0"
 	}
 }
