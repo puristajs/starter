@@ -14,7 +14,7 @@ npm create purista
 bun create purista
 ```
 
-**OR with pnpm**
+**OR with Yarn**
 
 ```sh
 yarn create purista

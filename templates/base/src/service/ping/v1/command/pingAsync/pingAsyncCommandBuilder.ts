@@ -13,7 +13,7 @@ export const pingAsyncCommandBuilder = pingV1ServiceBuilder
 	.addOutputSchema(pingV1PingAsyncOutputPayloadSchema)
 	.canEnqueue('pingJob', pingV1PingJobQueuePayloadSchema, pingV1PingJobQueueParameterSchema)
 	.exposeAsHttpEndpoint('POST', 'ping/async', undefined, undefined, undefined, undefined, { mode: 'async' })
-	.setCommandFunction(async (context, payload, parameter) => {
+	.setCommandFunction(async function pingAsync(context, payload, parameter) {
 		const job = await context.queue.enqueue.pingJob(payload, parameter)
 		return {
 			jobId: job.jobId,
