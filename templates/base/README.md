@@ -5,6 +5,7 @@ Welcome to your PURISTA based application. The template already contains a `ping
 - a synchronous `POST /api/v1/ping` command
 - an asynchronous `POST /api/v1/ping/async` command that enqueues work
 - a queue (`pingJob`) plus worker processing jobs sequentially
+- a disabled-by-default schedule contract that can be exported for external schedulers
 
 Run `npm start` (or `pnpm start`, etc.) to boot the DefaultEventBridge, start the ping service, and expose the HTTP endpoints through the Hono HTTP server (if you selected it during scaffolding).
 
@@ -31,7 +32,14 @@ In the root of this project:
 - run `purista add command` to add additional commands to an existing service
 - run `purista add subscription` to react to additional events
 - run `purista add queue` whenever you need another pull-based worker
+- run `npm run export:definitions` to refresh `purista.definitions.json` directly
 - run `npm run export:asyncapi`, `npm run export:schedules`, or `npm run export:runtime` to export provider-neutral integration metadata
+- run `npm run export:kubernetes-cronjobs -- --trigger-image <image> --trigger-url <url>` to export Kubernetes CronJob JSON for cron-based schedules
+
+Contract exporters read `purista.definitions.json`. Update `src/definitions.ts` when you add additional service builders that should be exported.
+
+Kubernetes export requires you to provide the trigger image and URL or command at invocation time.
+Kubernetes owns the clock; the trigger calls PURISTA, and PURISTA emits the event or enqueues the queue job.
 
 The template wires `DefaultEventBridge` and `DefaultQueueBridge` separately. This keeps the generated app compatible with PURISTA deployments that later replace either bridge with AMQP, NATS, Redis, Dapr, or another adapter.
 
