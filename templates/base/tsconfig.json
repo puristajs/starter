@@ -4,8 +4,9 @@
 	"compilerOptions": {
 		"outDir": "dist",
 		"strict": true,
+		"ignoreDeprecations": "6.0",
 		"module": "es2022",
-		"declaration": true,
+		"declaration": false,
 		"removeComments": false,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
@@ -19,10 +20,10 @@
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-		"declarationMap": true,
+		"declarationMap": false,
 		"noFallthroughCasesInSwitch": true,
 		"useUnknownInCatchVariables": true,
-		"types": ["node"]
+		"types": ["node", "vitest/globals"]
 	},
 	"include": ["src/**/*.ts"],
 	"exclude": ["node_modules", "dist"]

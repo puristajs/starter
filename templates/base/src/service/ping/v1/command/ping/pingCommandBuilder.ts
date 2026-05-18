@@ -1,4 +1,4 @@
-import { ServiceEvent } from '../../../../ServiceEvent.enum.js'
+import { ServiceEvent } from '../../../../serviceEvent.enum.js'
 import { pingV1ServiceBuilder } from '../../pingV1ServiceBuilder.js'
 import {
 	pingV1PingInputParameterSchema,
