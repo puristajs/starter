@@ -38,6 +38,8 @@ In the root of this project:
 
 Contract exporters read `purista.definitions.json`. Update `src/definitions.ts` when you add additional service builders that should be exported.
 
+This template also includes agent guidance files (`AGENTS.md`, `CLAUDE.md`, and `.agents/IMPLEMENTATION.md`). Local skill links under `.agents/skills/purista` and `.claude/skills/purista` point to the PURISTA skill bundled with `@purista/core`.
+
 Kubernetes export requires you to provide the trigger image and URL or command at invocation time.
 Kubernetes owns the clock; the trigger calls PURISTA, and PURISTA emits the event or enqueues the queue job.
 
