@@ -2,6 +2,15 @@
 
 This project is CLI-first. Prefer generated PURISTA artifacts over manual framework skeletons.
 
+## Local CLI
+- This project installs `@purista/cli` as a dev dependency. Use package scripts instead of a global `purista` binary.
+- Runtime: `node`
+- Package manager: `npm` by default; use the equivalent script runner for pnpm, yarn, or bun if you changed package manager.
+- Create services with `npm run add:service -- <name> --description "<description>"`.
+- Create commands with `npm run add:command -- <name> --service <serviceName> --service-version <version>`.
+- Run the app with `npm start`.
+- Run tests with `npm test`.
+
 ## Project Shape
 - `purista.json` defines file casing, event casing, `servicePath`, and `agentPath`.
 - Service definitions live under `src/service` unless `purista.json` says otherwise.
@@ -9,13 +18,13 @@ This project is CLI-first. Prefer generated PURISTA artifacts over manual framew
 - Exportable services must be included in `src/definitions.ts`.
 
 ## Artifact Creation
-- New service: `purista add service`
-- New command: `purista add command`
-- New subscription: `purista add subscription`
-- New stream: `purista add stream`
-- New queue: `purista add queue`
-- New queue worker: `purista add queue-worker`
-- New agent: `purista add agent`
+- New service: `npm run add:service -- <name> --description "<description>"`
+- New command: `npm run add:command -- <name> --service <serviceName> --service-version <version>`
+- New subscription: `npm run add:subscription -- <name> --service <serviceName> --service-version <version> --event <eventName>`
+- New stream: `npm run add:stream -- <name> --service <serviceName> --service-version <version>`
+- New queue: `npm run add:queue -- <name> --service <serviceName> --service-version <version>`
+- New queue worker: `npm run add:queue-worker -- <name> --service <serviceName> --service-version <version> --queue <queueName>`
+- New agent: `npm run add:agent -- <name> --service <serviceName> --service-version <version>`
 
 After generation, edit handlers, schemas, runtime wiring, and tests to fit the domain.
 
