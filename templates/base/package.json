@@ -7,10 +7,6 @@
 	"scripts": {
 		"start": "tsx src/index.ts",
 		"test": "tsc --noEmit && vitest --globals",
-		"export:definitions": "tsx src/exportDefinitions.ts",
-		"export:asyncapi": "npm run export:definitions && purista export asyncapi --out asyncapi.json",
-		"export:schedules": "npm run export:definitions && purista export schedule-manifest --out schedules.json",
-		"export:kubernetes-cronjobs": "npm run export:definitions && purista export kubernetes-cronjob --out kubernetes-cronjobs.json",
 		"export:runtime": "purista export runtime-capabilities --out purista-runtime.json",
 		"add:service": "purista add service",
 		"add:command": "purista add command",
