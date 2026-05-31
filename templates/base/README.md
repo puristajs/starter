@@ -18,25 +18,21 @@ The official documentation can be found at **[purista.dev](https://purista.dev)*
 - startup validation is strict for requested broker guarantees, so unsupported semantics fail fast
 - you can explicitly dead-letter from workers with `context.job.moveToDeadLetter(reason?)`
 
-You can install the PURISTA CLI globally:
-
-```sh
-npm i -g @purista/cli
-```
-
-Or run it with `npx @purista/cli`.
+This template installs `@purista/cli` as a dev dependency. Prefer the local package scripts so the CLI version matches the project.
 
 In the root of this project:
 
-- run `purista add service` to add another service
-- run `purista add command` to add additional commands to an existing service
-- run `purista add subscription` to react to additional events
-- run `purista add queue` whenever you need another pull-based worker
+- run `npm run add:service -- <name>` to add another service
+- run `npm run add:command -- <name>` to add additional commands to an existing service
+- run `npm run add:subscription -- <name>` to react to additional events
+- run `npm run add:queue -- <name>` whenever you need another pull-based worker
 - run `npm run export:definitions` to refresh `purista.definitions.json` directly
 - run `npm run export:asyncapi`, `npm run export:schedules`, or `npm run export:runtime` to export provider-neutral integration metadata
 - run `npm run export:kubernetes-cronjobs -- --trigger-image <image> --trigger-url <url>` to export Kubernetes CronJob JSON for cron-based schedules
 
 Contract exporters read `purista.definitions.json`. Update `src/definitions.ts` when you add additional service builders that should be exported.
+
+This template also includes agent guidance files (`AGENTS.md`, `CLAUDE.md`, and `.agents/IMPLEMENTATION.md`). Local skill links under `.agents/skills/purista` and `.claude/skills/purista` point to the PURISTA skill bundled with `@purista/core`.
 
 Kubernetes export requires you to provide the trigger image and URL or command at invocation time.
 Kubernetes owns the clock; the trigger calls PURISTA, and PURISTA emits the event or enqueues the queue job.
