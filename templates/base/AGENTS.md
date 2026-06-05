@@ -8,6 +8,7 @@ This is a PURISTA application. Use the PURISTA framework shape and CLI-generated
 - Keep service code under the configured `servicePath` and agent code under the configured `agentPath`.
 - Keep schemas explicit at every command, subscription, stream, queue, worker, and agent boundary.
 - Keep runtime wiring in application bootstrap/config files. Do not import infrastructure clients directly in handlers when a PURISTA resource or runtime binding is appropriate.
+- Update `src/definitions.ts` when a new service builder should be exported.
 - For attached agents, keep `ai.models`, optional `ai.skills`, `ai.sandbox`, `ai.runtime`, and `ai.workspaceStore` bindings in service bootstrap/config. Use `.useSkills(...)` only with matching runtime skill bindings or explicitly trusted discovery. Use `setWorkspacePolicy({ mode: 'durable', required: true })` only when a queued agent must resume from durable workspace checkpoints.
 
 ## Local CLI
@@ -25,6 +26,7 @@ This is a PURISTA application. Use the PURISTA framework shape and CLI-generated
 
 ## Verification
 - Run the project test script after framework changes.
+- Run export scripts when definitions, schedules, streams, queues, agents, or HTTP exposure change.
 - Review logs, events, traces, queues, streams, and agent prompts for secret or PII leakage before production changes.
 - For skill-backed agents, verify startup fails for missing skill bindings and that prompts list only skill metadata plus `/skills/<name>/SKILL.md`, never the `SKILL.md` body.
 - For durable agent workspace replay, verify startup fails when required runtime/workspace store capabilities are missing and that workspace refs, file content, prompts, tool IO, credentials, tokens, and raw headers stay out of logs, traces, queues, events, and examples.
