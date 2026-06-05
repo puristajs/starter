@@ -26,9 +26,18 @@ In the root of this project:
 - run `npm run add:command -- <name>` to add additional commands to an existing service
 - run `npm run add:subscription -- <name>` to react to additional events
 - run `npm run add:queue -- <name>` whenever you need another pull-based worker
-- run `npm run export:runtime` to export provider-neutral runtime capability metadata
+- run `npm run export:definitions` to refresh `purista.definitions.json` directly
+- run `npm run export:asyncapi`, `npm run export:schedules`, or `npm run export:runtime` to export provider-neutral integration metadata
+- run `npm run export:kubernetes-cronjobs -- --trigger-image <image> --trigger-url <url>` to export Kubernetes CronJob JSON for cron-based schedules
+
+Contract exporters read `purista.definitions.json`. Update `src/definitions.ts` when you add additional service builders that should be exported.
 
 This template also includes agent guidance files (`AGENTS.md`, `CLAUDE.md`, and `.agents/IMPLEMENTATION.md`). Local skill links under `.agents/skills/purista` and `.claude/skills/purista` point to the PURISTA skill bundled with `@purista/core`.
+
+Attached agents keep model, skill, sandbox, durable runtime, and durable workspace stores in service bootstrap/config via `ai.models`, `ai.skills`, `ai.sandbox`, `ai.runtime`, and `ai.workspaceStore`. If an agent declares `.useSkills(...)`, bind the skill directories through `ai.skills.bindings`, `ai.skills.namespaces`, or explicitly trusted discovery. Declare durable replay with `setWorkspacePolicy({ mode: 'durable', required: true })` only when an agent must resume from committed workspace checkpoints; otherwise agents remain ephemeral by default.
+
+Kubernetes export requires you to provide the trigger image and URL or command at invocation time.
+Kubernetes owns the clock; the trigger calls PURISTA, and PURISTA emits the event or enqueues the queue job.
 
 The template wires `DefaultEventBridge` and `DefaultQueueBridge` separately. This keeps the generated app compatible with PURISTA deployments that later replace either bridge with AMQP, NATS, Redis, Dapr, or another adapter.
 
