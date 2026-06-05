@@ -30,6 +30,8 @@ In the root of this project:
 
 This template also includes agent guidance files (`AGENTS.md`, `CLAUDE.md`, and `.agents/IMPLEMENTATION.md`). Local skill links under `.agents/skills/purista` and `.claude/skills/purista` point to the PURISTA skill bundled with `@purista/core`.
 
+Attached agents keep model, sandbox, durable runtime, and durable workspace adapters in service bootstrap/config via `ai.models`, `ai.sandbox`, `ai.runtime`, and `ai.workspace`. Declare durable replay with `setWorkspacePolicy({ mode: 'durable', required: true })` only when an agent must resume from committed workspace checkpoints; otherwise agents remain ephemeral by default.
+
 The template wires `DefaultEventBridge` and `DefaultQueueBridge` separately. This keeps the generated app compatible with PURISTA deployments that later replace either bridge with AMQP, NATS, Redis, Dapr, or another adapter.
 
 ---
