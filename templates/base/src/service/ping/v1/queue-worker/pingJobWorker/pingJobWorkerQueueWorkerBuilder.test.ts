@@ -1,4 +1,4 @@
-import { createQueueWorkerTestHarness } from '@purista/core'
+import { createQueueWorkerTestHarness } from '@purista/core/testing'
 
 import { pingV1Service } from '../../pingV1Service.js'
 import type { PingV1PingJobQueueParameter, PingV1PingJobQueuePayload } from '../../queue/pingJob/types.js'

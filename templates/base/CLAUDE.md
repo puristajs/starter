@@ -2,4 +2,4 @@
 
 Follow [AGENTS.md](./AGENTS.md) for this PURISTA project.
 
-Use the bundled PURISTA skill linked at `.claude/skills/purista` before designing or changing PURISTA services, commands, subscriptions, streams, queues, workers, agents, or runtime wiring.
+Use the bundled PURISTA skill linked at `.claude/skills/purista` before designing or changing PURISTA services, commands, subscriptions, streams, queues, workers, agents, or runtime wiring. Before an existing-application upgrade, use `.claude/skills/purista-migration`.

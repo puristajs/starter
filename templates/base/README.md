@@ -34,7 +34,7 @@ In the root of this project:
 
 Contract exporters read `purista.definitions.json`. Update `src/definitions.ts` when you add additional service builders that should be exported.
 
-This template also includes agent guidance files (`AGENTS.md`, `CLAUDE.md`, and `.agents/IMPLEMENTATION.md`). Local skill links under `.agents/skills/purista` and `.claude/skills/purista` point to the PURISTA skill bundled with `@purista/core`.
+This template also includes agent guidance files (`AGENTS.md`, `CLAUDE.md`, and `.agents/IMPLEMENTATION.md`). Local links under `.agents/skills/` and `.claude/skills/` point to the bundled PURISTA architecture and migration skills in `@purista/core`. Use `purista-migration` only when upgrading an existing application; use `purista` for normal feature work.
 
 Attached agents keep model, skill, sandbox, durable runtime, and durable workspace stores in service bootstrap/config via `ai.models`, `ai.skills`, `ai.sandbox`, `ai.runtime`, and `ai.workspaceStore`. If an agent declares `.useSkills(...)`, bind the skill directories through `ai.skills.bindings`, `ai.skills.namespaces`, or explicitly trusted discovery. Agents are ephemeral by default. Use `npm run add:agent -- <name> --service <service> --service-version 1 --durable-workspace` only for a resumable workflow-backed agent; it generates `setHarnessWorkflow(...)` plus `setWorkspacePolicy({ mode: 'durable', required: true, cleanup: 'on_terminal' })`. Do not use durable workspace policy for a direct harness agent or custom run function.
 

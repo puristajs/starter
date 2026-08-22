@@ -25,7 +25,8 @@ This is a PURISTA application. Use the PURISTA framework shape and CLI-generated
 
 ## Skills
 - Use the bundled PURISTA skill from `.agents/skills/purista` or `.claude/skills/purista`.
-- These paths link to `node_modules/@purista/core/skills/purista`, so dependency updates refresh the framework skill.
+- Use `.agents/skills/purista-migration` or `.claude/skills/purista-migration` before upgrading this existing application to a new PURISTA release; it is not the primary skill for new features.
+- These paths link to `node_modules/@purista/core/skills/`, so dependency updates refresh both framework skills.
 
 ## Verification
 - Run the project test script after framework changes.
