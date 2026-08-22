@@ -11,4 +11,10 @@ export const pingServiceInfo = {
 
 // create a service builder instance and assign service config schema and default config.
 
-export const pingV1ServiceBuilder = new ServiceBuilder(pingServiceInfo).setConfigSchema(pingServiceV1ConfigSchema)
+export const pingV1ServiceBuilder = new ServiceBuilder(pingServiceInfo)
+	.setConfigSchema(pingServiceV1ConfigSchema)
+	.defineMetric('app.ping.requests', {
+		kind: 'counter',
+		unit: '{request}',
+		description: 'Ping requests handled by the starter service',
+	})

@@ -15,7 +15,7 @@ This project is CLI-first. Prefer generated PURISTA artifacts over manual framew
 - `purista.json` defines file casing, event casing, `servicePath`, and `agentPath`.
 - Service definitions live under `src/service` unless `purista.json` says otherwise.
 - Agent definitions live under `src/agents` unless `purista.json` says otherwise.
-- Exportable services must be included in `src/definitions.ts`.
+- Exportable services are tracked by `src/definitions.ts`; the standard local `add:service` command appends new generated services.
 
 ## Artifact Creation
 - New service: `npm run add:service -- <name> --description "<description>"`
@@ -34,4 +34,6 @@ After generation, edit handlers, schemas, runtime wiring, and tests to fit the d
 - Do not add CommonJS variants. Generated PURISTA apps are ESM-only.
 - Keep external systems behind resources, stores, bridges, or runtime bindings.
 - Keep EventBridge and QueueBridge concerns separate.
+- Export `purista.schedules.json` before a scheduler deployment. The scheduler host imports that JSON manifest and infrastructure only, never business services or handlers.
+- The generated `start:scheduler` host is local/test-only because it uses `DefaultSchedulerProvider`. Production hosts need an explicitly selected shared EventBridge and durable provider package with distributed claims.
 - Keep provider packages as app-level dependencies.

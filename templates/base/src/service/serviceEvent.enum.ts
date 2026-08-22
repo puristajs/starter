@@ -5,8 +5,8 @@ export const ServiceEvent = {
 	 */
 	Pinged: 'pinged',
 	/**
-	 * Example event target for external schedule contracts.
-	 * Production timing is owned by an external scheduler such as Kubernetes CronJob.
+	 * Example event target for a separate PURISTA Scheduler Runtime host or an
+	 * external scheduler such as Kubernetes CronJob.
 	 */
 	PingScheduleDue: 'ping.schedule.due',
 } as const
