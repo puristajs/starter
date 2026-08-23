@@ -28,6 +28,9 @@ In the root of this project:
 - run `npm run add:queue -- <name>` whenever you need another pull-based worker
 - run `npm run add:schedule -- <name> --description "<description>" --service <service> --service-version 1 --event <eventName> --cron "0 2 * * *"` to declare an event-only clock boundary
 - run `npm run export:definitions` to refresh `purista.definitions.json` directly
+- run `npm run inspect:architecture` before changing an existing boundary; it exports definitions and prints the deterministic agent context
+- run `npm run validate:architecture` after a boundary change and `npm run doctor:architecture` for static project checks
+- persist `purista inspect --out <artifact>` and use `purista diff --base <approved-artifact> --strict` when a reviewed public contract changes; changed schemas are deliberately reported as unknown until approved
 - run `npm run export:asyncapi`, `npm run export:schedules`, or `npm run export:runtime` to export provider-neutral integration metadata
 - run `npm run start:scheduler` only after `npm run export:schedules` for the local standalone Scheduler Runtime host; it needs a shared EventBridge to reach a separately started app
 - run `npm run export:kubernetes-cronjobs -- --trigger-image <image> --trigger-url <url>` to export Kubernetes CronJob JSON for cron-based schedules
