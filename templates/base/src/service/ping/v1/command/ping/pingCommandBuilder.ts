@@ -13,9 +13,8 @@ export const pingCommandBuilder = pingV1ServiceBuilder
 	.addParameterSchema(pingV1PingInputParameterSchema)
 	.addOutputSchema(pingV1PingOutputPayloadSchema)
 	.exposeAsHttpEndpoint('POST', 'ping')
-	.setCommandFunction(async function ping(context, payload, _parameter) {
+	.setCommandFunction(async function ping(_context, payload, _parameter) {
 		// add your business logic here
-		context.metrics['app.ping.requests'].add(1)
 		return {
 			pong: payload.ping,
 		}
