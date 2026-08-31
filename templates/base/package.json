@@ -6,7 +6,7 @@
 	},
 	"scripts": {
 		"start": "tsx src/index.ts",
-		"test": "tsc --noEmit && vitest --globals",
+		"test": "tsc --noEmit && vitest run src --globals",
 		"export:definitions": "tsx src/exportDefinitions.ts",
 		"inspect:architecture": "tsx src/exportDefinitions.ts && purista inspect --view agent --format json",
 		"validate:architecture": "tsx src/exportDefinitions.ts && purista validate --strict --format json",
