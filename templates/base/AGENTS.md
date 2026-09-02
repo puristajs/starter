@@ -5,7 +5,7 @@ This is a PURISTA application. Use the PURISTA framework shape and CLI-generated
 ## Required workflow
 - Read `purista.json` before changing services, commands, subscriptions, streams, queues, workers, or agents.
 - Use the local `@purista/cli` package scripts whenever the CLI can create the target artifact. Refine generated code instead of hand-writing framework skeletons.
-- Keep service code under the configured `servicePath` and agent code under the configured `agentPath`.
+- Keep Framework artifacts under the configured `servicePath`. Native AI modules live under `src/harness/<service>`, with one composed Harness definition and one mount per service.
 - Keep schemas explicit at every command, subscription, stream, queue, worker, and agent boundary.
 - Keep runtime wiring in application bootstrap/config files. Do not import infrastructure clients directly in handlers when a PURISTA resource or runtime binding is appropriate.
 - Keep `src/definitions.ts` as the static export inventory. The local `add:service` command appends standard generated services to its `serviceBuilders` array.
