@@ -18,7 +18,8 @@
 		"add:queue": "purista add queue",
 		"add:queue-worker": "purista add queue-worker",
 		"add:schedule": "purista add schedule",
-		"add:agent": "purista add agent"
+		"add:agent": "purista add agent",
+		"add:workflow": "purista add workflow"
 	},
 	"dependencies": {
 		"@hono/node-server": "latest",
