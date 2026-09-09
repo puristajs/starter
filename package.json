@@ -4,6 +4,9 @@
 	"private": true,
 	"description": "The starter template files for a new PURISTA project",
 	"scripts": {
+		"typecheck": "node scripts/starter-audit.mjs && npm run typecheck --prefix templates/base",
+		"test": "node scripts/starter-audit.mjs && npm test --prefix templates/base",
+		"build": "node scripts/starter-audit.mjs && npm run build --prefix templates/base",
 		"lint": "bunx @biomejs/biome check",
 		"lint:fix": "bunx @biomejs/biome check --write"
 	},

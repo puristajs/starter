@@ -1,4 +1,5 @@
 import { pingCommandBuilder } from './command/ping/pingCommandBuilder.js'
+import { pingHarness } from './harness/pingHarness.js'
 import { pingV1ServiceBuilder } from './pingV1ServiceBuilder.js'
 
 // bring service config definition, command definitions and subscription definitions together in the service
@@ -9,4 +10,6 @@ type CommandDefinition = Parameters<typeof pingV1ServiceBuilder.addCommandDefini
 
 const commandDefinitions: CommandDefinition[] = [pingCommandBuilder.getDefinition()]
 
-export const pingV1Service = pingV1ServiceBuilder.addCommandDefinition(...commandDefinitions)
+export const pingV1Service = pingV1ServiceBuilder
+	.addCommandDefinition(...commandDefinitions)
+	.mountHarness(pingHarness)

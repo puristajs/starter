@@ -1,11 +1,17 @@
 # PURISTA Application
 
 Welcome to your PURISTA based application. The template contains one `ping`
-service with a synchronous `POST /api/v1/ping` command. It is intentionally
-minimal: queues, subscriptions, streams, schedules, agents, telemetry, and
-provider adapters are added only when the application requires them.
+service with a synchronous `POST /api/v1/ping` command and one small native
+Harness agent. The agent shows the service-owned folder layout, one Harness
+composition, one service mount, runtime model binding, and a deterministic test.
+Queues, subscriptions, streams, schedules, telemetry, and further adapters are
+added only when the application requires them.
 
 Run `npm start` (or `pnpm start`, etc.) to boot the DefaultEventBridge, start the ping service, and expose the HTTP endpoints through the Hono HTTP server (if you selected it during scaffolding).
+
+Set `OPENAI_API_KEY` in the process environment before starting the
+agent-enabled application; `.env.example` lists the required variable. Tests
+use `FakeModelProvider` and do not need that credential or network access.
 
 The official documentation can be found at **[purista.dev](https://purista.dev)**.
 
@@ -18,6 +24,8 @@ In the root of this project:
 - run `npm run add:subscription -- <name>` to react to additional events
 - run `npm run add:queue -- <name>` whenever you need another pull-based worker
 - run `npm run add:schedule -- <name> --description "<description>" --service <service> --service-version 1 --event <eventName> --cron "0 2 * * *"` to declare an event-only clock boundary
+- run `npm run add:agent -- <name> --service <service> --service-version 1` to add a native agent to a service-owned Harness
+- run `npm run add:workflow`, `npm run add:tool`, `npm run add:skill`, or `npm run add:mcp` for the corresponding Harness definition
 - run `npm run export:definitions` to refresh `purista.definitions.json` directly
 - run `npm run inspect:architecture` before changing an existing boundary; it exports definitions and prints the deterministic agent context
 - run `npm run validate:architecture` after a boundary change and `npm run doctor:architecture` for static project checks
@@ -25,7 +33,7 @@ In the root of this project:
 
 Contract exporters read `purista.definitions.json`. Update `src/definitions.ts` when you add additional service builders that should be exported.
 
-This template also includes agent guidance files (`AGENTS.md`, `CLAUDE.md`, and `.agents/IMPLEMENTATION.md`). Local links under `.agents/skills/` and `.claude/skills/` point to the bundled PURISTA architecture and migration skills in `@purista/core`. Use `purista-migration` only when upgrading an existing application; use `purista` for normal feature work.
+This template also includes agent guidance files (`AGENTS.md`, `CLAUDE.md`, and `.agents/IMPLEMENTATION.md`). Local links under `.agents/skills/` and `.claude/skills/` point to the bundled PURISTA architecture and migration skills in `@purista/core`. Use `purista-migration` only when upgrading an existing application; use `purista` for normal Framework and Harness integration work.
 
 ---
 

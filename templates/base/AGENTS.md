@@ -1,30 +1,51 @@
 # Agent Guide
 
-This is a PURISTA application. Use the PURISTA framework shape and CLI-generated files as the source of truth for project structure.
+This is a PURISTA v4 application. Read `purista.json`, use the local `@purista/cli` scripts, and refine generated artifacts instead of writing framework boilerplate from memory.
 
-## Required workflow
-- Read `purista.json` before changing services, commands, subscriptions, streams, queues, workers, or agents.
-- Use the local `@purista/cli` package scripts whenever the CLI can create the target artifact. Refine generated code instead of hand-writing framework skeletons.
-- Keep Framework artifacts under the configured `servicePath`. Native AI modules live under `src/harness/<service>`, with one composed Harness definition and one mount per service.
-- Keep schemas explicit at every command, subscription, stream, queue, worker, and agent boundary.
-- Keep runtime wiring in application bootstrap/config files. Do not import infrastructure clients directly in handlers when a PURISTA resource or runtime binding is appropriate.
-- Keep `src/definitions.ts` as the static export inventory. The local `add:service` command appends standard generated services to its `serviceBuilders` array.
+## Project shape
+
+- Keep Framework definitions under the configured `servicePath`, normally `src/service`.
+- Keep a service's Harness code under `src/service/<service>/v<version>/harness/{agent,workflow,tool,skill,mcp}`. Definitions use lower camel case IDs.
+- Compose direct agent, workflow, tool, skill, and MCP definitions into one Harness definition for that service version. Call `mountHarness` once on the service builder.
+- Keep `src/definitions.ts` as the static service export inventory. `npm run add:service` updates its `serviceBuilders` array.
+
+## Runtime and invocation
+
+- Bind provider adapters in application bootstrap code. Supply the primary hosted model through the `ai.model` runtime option; handlers do not construct provider SDK clients.
+- Agents and workflows declare the tools, skills, MCP servers, and target addresses they may use.
+- A Framework command declares `canInvokeAgent(serviceName, serviceVersion, agent.contract)` and invokes the same address through `context.agent[serviceName][serviceVersion][agent.contract.id]`.
+- Keep direct session and addressed Framework results as Harness outcome envelopes. Workflow-scoped agent `.run(...)` returns the agent output directly.
+- Use generated command, stream, or queue projections to expose Harness work. Use the AI SDK UI message stream v1 adapter for compatible UI streaming and resume requests.
+
+## Authentication and authorization
+
+- `ProtectMiddleware` authenticates HTTP requests and provides the principal to PURISTA.
+- Business guards and target policies own authorization. Do not treat a valid login as permission to run every agent, workflow, command, or tool.
+- Keep credentials in runtime environment configuration. Never commit tokens or put transport secrets in an MCP definition.
 
 ## Local CLI
-- This project installs `@purista/cli` as a dev dependency. Use package scripts instead of a global `purista` binary.
-- Runtime: `node`
-- Package manager: `npm` by default; use the equivalent script runner for pnpm, yarn, or bun if you changed package manager.
-- Create services with `npm run add:service -- <name> --description "<description>"`.
-- Create commands with `npm run add:command -- <name> --service <serviceName> --service-version <version>`.
-- Run the app with `npm start`.
-- Run tests with `npm test`.
+
+Use package scripts so the project-local CLI version creates every artifact:
+
+```sh
+npm run add:service -- <name> --description "<description>"
+npm run add:command -- <name> --service <serviceName> --service-version <version>
+npm run add:agent -- <name> --service <serviceName> --service-version <version>
+npm run add:workflow -- <name> --service <serviceName> --service-version <version>
+npm run add:tool -- <name> --service <serviceName> --service-version <version>
+npm run add:skill -- <name> --service <serviceName> --service-version <version>
+npm run add:mcp -- <name> --service <serviceName> --service-version <version>
+```
+
+Run the app with `npm start` and the test suite with `npm test`.
+
+## Deterministic tests
+
+- Import `FakeModelProvider`, `FakeHarnessStorage`, `FakeSandbox`, and `FakeLogger` from `@purista/harness/testing`; tests must not need provider credentials or network access.
+- Prefer `new FakeModelProvider({ strict: true })`, enqueue the exact responses, and call `assertExhausted()`.
+- Test portable agents and workflows in a small standalone Harness graph. Test a `serviceBuilder.defineTool(...)` host tool through a mounted service instance.
 
 ## Skills
-- Use the bundled PURISTA skill from `.agents/skills/purista` or `.claude/skills/purista`.
-- Use `.agents/skills/purista-migration` or `.claude/skills/purista-migration` before upgrading this existing application to a new PURISTA release; it is not the primary skill for new features.
-- These paths link to `node_modules/@purista/core/skills/`, so dependency updates refresh both framework skills.
 
-## Verification
-- Run the project test script after framework changes.
-- Run export scripts when definitions, schedules, streams, queues, agents, or HTTP exposure change.
-- Review logs, events, traces, queues, streams, and agent prompts for secret or PII leakage before production changes.
+- Use `.agents/skills/purista` or `.claude/skills/purista` for Framework work.
+- Use the migration skill before upgrading an existing application. The installed paths are mirrors of the package-owned skills.
