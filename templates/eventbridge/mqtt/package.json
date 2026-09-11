@@ -1,6 +1,6 @@
 {
 	"dependencies": {
-		"@purista/mqttbridge": "latest"
+		"@purista/mqttbridge": "^4.0.0"
 	},
 	"devDependencies": {},
 	"trustedDependencies": [],

@@ -1,22 +1,19 @@
 # PURISTA Application
 
-Welcome to your PURISTA based application. The template already contains a `ping` service with
-
-- a synchronous `POST /api/v1/ping` command
-- an asynchronous `POST /api/v1/ping/async` command that enqueues work
-- a queue (`pingJob`) plus worker processing jobs sequentially
-- a disabled-by-default schedule contract that can be exported for external schedulers
+Welcome to your PURISTA based application. The template contains one `ping`
+service with a synchronous `POST /api/v1/ping` command and one small native
+Harness agent. The agent shows the service-owned folder layout, one Harness
+composition, one service mount, runtime model binding, and a deterministic test.
+Queues, subscriptions, streams, schedules, telemetry, and further adapters are
+added only when the application requires them.
 
 Run `npm start` (or `pnpm start`, etc.) to boot the DefaultEventBridge, start the ping service, and expose the HTTP endpoints through the Hono HTTP server (if you selected it during scaffolding).
 
+Set `OPENAI_API_KEY` in the process environment before starting the
+agent-enabled application; `.env.example` lists the required variable. Tests
+use `FakeModelProvider` and do not need that credential or network access.
+
 The official documentation can be found at **[purista.dev](https://purista.dev)**.
-
-## Reliability defaults in this template
-
-- queue workers start conservatively (`sequential`, `prefetch: 1`) for predictable local behavior
-- queue retries are bounded and dead-lettered automatically once retry budget/window is exhausted
-- startup validation is strict for requested broker guarantees, so unsupported semantics fail fast
-- you can explicitly dead-letter from workers with `context.job.moveToDeadLetter(reason?)`
 
 This template installs `@purista/cli` as a dev dependency. Prefer the local package scripts so the CLI version matches the project.
 
@@ -26,20 +23,17 @@ In the root of this project:
 - run `npm run add:command -- <name>` to add additional commands to an existing service
 - run `npm run add:subscription -- <name>` to react to additional events
 - run `npm run add:queue -- <name>` whenever you need another pull-based worker
+- run `npm run add:schedule -- <name> --description "<description>" --service <service> --service-version 1 --event <eventName> --cron "0 2 * * *"` to declare an event-only clock boundary
+- run `npm run add:agent -- <name> --service <service> --service-version 1 --model-alias <alias>` to add a native agent with an application-chosen model alias to a service-owned Harness
+- run `npm run add:workflow`, `npm run add:tool`, `npm run add:skill`, or `npm run add:mcp` for the corresponding Harness definition
 - run `npm run export:definitions` to refresh `purista.definitions.json` directly
-- run `npm run export:asyncapi`, `npm run export:schedules`, or `npm run export:runtime` to export provider-neutral integration metadata
-- run `npm run export:kubernetes-cronjobs -- --trigger-image <image> --trigger-url <url>` to export Kubernetes CronJob JSON for cron-based schedules
+- run `npm run inspect:architecture` before changing an existing boundary; it exports definitions and prints the deterministic agent context
+- run `npm run validate:architecture` after a boundary change and `npm run doctor:architecture` for static project checks
+- persist `purista inspect --out <artifact>` and use `purista diff --base <approved-artifact> --strict` when a reviewed public contract changes; changed schemas are deliberately reported as unknown until approved
 
 Contract exporters read `purista.definitions.json`. Update `src/definitions.ts` when you add additional service builders that should be exported.
 
-This template also includes agent guidance files (`AGENTS.md`, `CLAUDE.md`, and `.agents/IMPLEMENTATION.md`). Local skill links under `.agents/skills/purista` and `.claude/skills/purista` point to the PURISTA skill bundled with `@purista/core`.
-
-Attached agents keep model, skill, sandbox, durable runtime, and durable workspace stores in service bootstrap/config via `ai.models`, `ai.skills`, `ai.sandbox`, `ai.runtime`, and `ai.workspaceStore`. If an agent declares `.useSkills(...)`, bind the skill directories through `ai.skills.bindings`, `ai.skills.namespaces`, or explicitly trusted discovery. Declare durable replay with `setWorkspacePolicy({ mode: 'durable', required: true })` only when an agent must resume from committed workspace checkpoints; otherwise agents remain ephemeral by default.
-
-Kubernetes export requires you to provide the trigger image and URL or command at invocation time.
-Kubernetes owns the clock; the trigger calls PURISTA, and PURISTA emits the event or enqueues the queue job.
-
-The template wires `DefaultEventBridge` and `DefaultQueueBridge` separately. This keeps the generated app compatible with PURISTA deployments that later replace either bridge with AMQP, NATS, Redis, Dapr, or another adapter.
+This template also includes agent guidance files (`AGENTS.md`, `CLAUDE.md`, and `.agents/IMPLEMENTATION.md`). Local links under `.agents/skills/` and `.claude/skills/` point to the bundled PURISTA architecture and migration skills in `@purista/core`. Use `purista-migration` only when upgrading an existing application; use `purista` for normal Framework and Harness integration work.
 
 ---
 

@@ -1,8 +1,8 @@
 {
 	"dependencies": {
-		"@hono/node-server": "latest",
-		"@scalar/hono-api-reference": "latest",
-		"@purista/hono-http-server": "latest"
+		"@hono/node-server": "^2.1.0",
+		"@scalar/hono-api-reference": "^0.11.13",
+		"@purista/hono-http-server": "^4.0.0"
 	},
 	"devDependencies": {},
 	"trustedDependencies": [],

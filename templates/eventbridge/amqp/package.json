@@ -1,6 +1,6 @@
 {
 	"dependencies": {
-		"@purista/amqpbridge": "latest"
+		"@purista/amqpbridge": "^4.0.0"
 	},
 	"devDependencies": {},
 	"trustedDependencies": [],
