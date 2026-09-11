@@ -11,7 +11,7 @@ This is a PURISTA v4 application. Read `purista.json`, use the local `@purista/c
 
 ## Runtime and invocation
 
-- Bind provider adapters in application bootstrap code. Supply the primary hosted model through the `ai.model` runtime option; handlers do not construct provider SDK clients.
+- Give every agent an explicit application-chosen model alias. Bind the exact alias map through `ai.models` in application bootstrap code; handlers do not construct provider SDK clients and PURISTA reserves no alias.
 - Agents and workflows declare the tools, skills, MCP servers, and target addresses they may use.
 - A Framework command declares `canInvokeAgent(serviceName, serviceVersion, agent.contract)` and invokes the same address through `context.agent[serviceName][serviceVersion][agent.contract.id]`.
 - Keep direct session and addressed Framework results as Harness outcome envelopes. Workflow-scoped agent `.run(...)` returns the agent output directly.
@@ -30,7 +30,7 @@ Use package scripts so the project-local CLI version creates every artifact:
 ```sh
 npm run add:service -- <name> --description "<description>"
 npm run add:command -- <name> --service <serviceName> --service-version <version>
-npm run add:agent -- <name> --service <serviceName> --service-version <version>
+npm run add:agent -- <name> --service <serviceName> --service-version <version> --model-alias <alias>
 npm run add:workflow -- <name> --service <serviceName> --service-version <version>
 npm run add:tool -- <name> --service <serviceName> --service-version <version>
 npm run add:skill -- <name> --service <serviceName> --service-version <version>

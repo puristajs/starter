@@ -136,7 +136,7 @@ const guidance = `${rootAgents}\n${implementationGuide}`
 for (const required of [
 	'src/service/<service>/v<version>/harness',
 	'mountHarness',
-	'ai.model',
+	'ai.models',
 	'canInvokeAgent(serviceName, serviceVersion, agent.contract)',
 	'ProtectMiddleware',
 	'authorization',
@@ -157,6 +157,7 @@ check((service.match(/\.mountHarness\(/g) ?? []).length === 1, 'pingV1Service.ts
 check(service.includes('.mountHarness(pingHarness)'), 'pingV1Service.ts: the final service must mount pingHarness')
 check(harness.includes("defineHarness({ name: 'ping' }).addAgent(pingAgent)"), 'pingHarness.ts: expected one direct ping agent root')
 check(agent.includes("defineAgent('ping',"), 'pingAgent.ts: expected the lower camel case ping target id')
+check(agent.includes("model: 'ping'"), 'pingAgent.ts: expected an explicit application-chosen model alias')
 check(!agent.includes('handler:'), 'pingAgent.ts: default-loop agents must not define custom orchestration handlers')
 check(agentTest.includes("from '@purista/harness/testing'"), 'pingAgent.test.ts: expected public Harness testing import')
 check(agentTest.includes('new FakeModelProvider({ strict: true })'), 'pingAgent.test.ts: expected a strict fake model')
@@ -166,7 +167,7 @@ check(commandTest.includes("from '@purista/core'"), 'ping.test.ts: expected publ
 check(!commandTest.includes("@purista/core/testing"), 'ping.test.ts: removed Core testing subpath remains')
 check(commandTest.includes('createCommandContextMock'), 'ping.test.ts: expected an isolated command context mock')
 check(bootstrap.includes("from '@purista/harness-openai'"), 'src/index.ts: expected the public OpenAI Harness adapter')
-check(bootstrap.includes('ai:') && bootstrap.includes('model:'), 'src/index.ts: expected additive ai.model runtime binding')
+check(bootstrap.includes('ai:') && bootstrap.includes('models:') && bootstrap.includes('ping:'), 'src/index.ts: expected the exact ai.models.ping runtime binding')
 check(envExample === 'OPENAI_API_KEY=\n', 'templates/base/.env.example: expected an empty OPENAI_API_KEY entry')
 
 const joinedSource = `${service}\n${harness}\n${agent}\n${agentTest}\n${commandTest}\n${bootstrap}`

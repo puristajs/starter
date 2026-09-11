@@ -24,7 +24,7 @@ In the root of this project:
 - run `npm run add:subscription -- <name>` to react to additional events
 - run `npm run add:queue -- <name>` whenever you need another pull-based worker
 - run `npm run add:schedule -- <name> --description "<description>" --service <service> --service-version 1 --event <eventName> --cron "0 2 * * *"` to declare an event-only clock boundary
-- run `npm run add:agent -- <name> --service <service> --service-version 1` to add a native agent to a service-owned Harness
+- run `npm run add:agent -- <name> --service <service> --service-version 1 --model-alias <alias>` to add a native agent with an application-chosen model alias to a service-owned Harness
 - run `npm run add:workflow`, `npm run add:tool`, `npm run add:skill`, or `npm run add:mcp` for the corresponding Harness definition
 - run `npm run export:definitions` to refresh `purista.definitions.json` directly
 - run `npm run inspect:architecture` before changing an existing boundary; it exports definitions and prints the deterministic agent context

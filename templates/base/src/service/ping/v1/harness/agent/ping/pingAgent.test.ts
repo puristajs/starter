@@ -14,7 +14,7 @@ describe('pingAgent', () => {
 		})
 
 		const harness = defineHarness({ name: 'pingAgentTest' }).addAgent(pingAgent)
-		const runtime = await harness.getInstance({ model: { provider, model: 'fake' } })
+		const runtime = await harness.getInstance({ models: { ping: { provider, model: 'fake' } } })
 
 		try {
 			const session = await runtime.getSession('ping-agent-test')

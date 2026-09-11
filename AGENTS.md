@@ -7,7 +7,7 @@ This repository publishes the files used to start a PURISTA application. Keep th
 - Keep service code under `src/service/<service>/v<version>/`.
 - Put Harness definitions in that service version's `harness/agent`, `harness/workflow`, `harness/tool`, `harness/skill`, and `harness/mcp` directories.
 - Compose those direct definitions with one `defineHarness(...)` value and attach it to the service once with `mountHarness`.
-- Bind models and other adapters at startup. Use the `ai.model` resource for a service-hosted model binding instead of importing a provider client inside an agent.
+- Give every agent an explicit application-chosen model alias. Bind the exact alias map through `ai.models` at startup instead of importing a provider client inside an agent. PURISTA reserves no alias.
 - Let agents and workflows declare their target policy. Service commands call an agent with `canInvokeAgent(serviceName, serviceVersion, agent.contract)` and then use the same service address from their context.
 
 ## Boundaries and projections

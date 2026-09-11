@@ -13,9 +13,11 @@ export const main = async () => {
 
 	const pingService = await pingV1Service.getInstance(eventBridge, {
 		ai: {
-			model: {
-				provider: openai({ apiKey: env.OPENAI_API_KEY }),
-				model: 'gpt-5-mini',
+			models: {
+				ping: {
+					provider: openai({ apiKey: env.OPENAI_API_KEY }),
+					model: 'gpt-5-mini',
+				},
 			},
 		},
 	})
