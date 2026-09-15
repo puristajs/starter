@@ -137,7 +137,12 @@ for (const required of [
 	'src/service/<service>/v<version>/harness',
 	'mountHarness',
 	'ai.models',
-	'canInvokeAgent(serviceName, serviceVersion, agent.contract)',
+	'serviceBuilder.harnessTarget(agent.contract)',
+	'canInvokeAgent(target)',
+	'serviceBuilder.defineHarnessPolicy(definition, { agents, workflows })',
+	'ai.concurrency: { runs, modelCalls }',
+	'ai.sandbox: { adapter, policy }',
+	'target.resume(descriptor).run(options)',
 	'ProtectMiddleware',
 	'authorization',
 	'@purista/harness/testing',
@@ -145,6 +150,8 @@ for (const required of [
 	'FakeHarnessStorage',
 	'FakeSandbox',
 	'FakeLogger',
+	'textReply',
+	'objectReply',
 ]) {
 	check(guidance.includes(required), `starter guidance: missing ${required}`)
 }
@@ -161,6 +168,7 @@ check(agent.includes("model: 'ping'"), 'pingAgent.ts: expected an explicit appli
 check(!agent.includes('handler:'), 'pingAgent.ts: default-loop agents must not define custom orchestration handlers')
 check(agentTest.includes("from '@purista/harness/testing'"), 'pingAgent.test.ts: expected public Harness testing import')
 check(agentTest.includes('new FakeModelProvider({ strict: true })'), 'pingAgent.test.ts: expected a strict fake model')
+check(agentTest.includes("textReply('pong')"), 'pingAgent.test.ts: expected the concise text reply helper')
 check(agentTest.includes('provider.assertExhausted()'), 'pingAgent.test.ts: expected fake-model exhaustion assertion')
 check(agentTest.includes('await runtime.close()'), 'pingAgent.test.ts: expected runtime cleanup')
 check(commandTest.includes("from '@purista/core'"), 'ping.test.ts: expected public Core testing helpers from the package root')
@@ -171,7 +179,17 @@ check(bootstrap.includes('ai:') && bootstrap.includes('models:') && bootstrap.in
 check(envExample === 'OPENAI_API_KEY=\n', 'templates/base/.env.example: expected an empty OPENAI_API_KEY entry')
 
 const joinedSource = `${service}\n${harness}\n${agent}\n${agentTest}\n${commandTest}\n${bootstrap}`
-for (const removed of ['AgentQueueBuilder', 'addAgentDefinition', 'setHarnessAgent', '.define()', '.build()']) {
+for (const removed of [
+	'AgentQueueBuilder',
+	'addAgentDefinition',
+	'setHarnessAgent',
+	'.define()',
+	'.build()',
+	'targets: {',
+	'sandboxBinding',
+	'modelAdmission',
+	'canInvokeAgent(serviceName, serviceVersion, agent.contract)',
+]) {
 	check(!joinedSource.includes(removed), `starter source: removed Harness API ${removed} remains`)
 }
 

@@ -12,10 +12,13 @@ This is a PURISTA v4 application. Read `purista.json`, use the local `@purista/c
 ## Runtime and invocation
 
 - Give every agent an explicit application-chosen model alias. Bind the exact alias map through `ai.models` in application bootstrap code; handlers do not construct provider SDK clients and PURISTA reserves no alias.
-- Agents and workflows declare the tools, skills, MCP servers, and target addresses they may use.
-- A Framework command declares `canInvokeAgent(serviceName, serviceVersion, agent.contract)` and invokes the same address through `context.agent[serviceName][serviceVersion][agent.contract.id]`.
+- Agents and workflows declare the tools, skills, MCP servers, and child targets they may use. The service builder owns published-root policy and PURISTA addresses.
+- Define resource-aware root policy with `serviceBuilder.defineHarnessPolicy(definition, { agents, workflows })`; do not add a `targets` wrapper.
+- A Framework command binds a root with `serviceBuilder.harnessTarget(agent.contract)`, declares `canInvokeAgent(target)`, and invokes the same typed address through `context.agent[serviceName][serviceVersion][agent.contract.id]`. The call always uses the EventBridge.
 - Keep direct session and addressed Framework results as Harness outcome envelopes. Workflow-scoped agent `.run(...)` returns the agent output directly.
-- Use generated command, stream, or queue projections to expose Harness work. Use the AI SDK UI message stream v1 adapter for compatible UI streaming and resume requests.
+- Continue an interrupted run with `target.resume(descriptor).run(options)` or `.stream(options)`; do not resend the original input or put `resume` in normal invocation options.
+- Use generated command, stream, or queue projections to expose Harness work. Use the AI SDK UI message stream v1 adapter for compatible UI streaming and approval continuation.
+- Configure temporary execution limits as `ai.concurrency: { runs, modelCalls }`. Configure sandbox execution and ownership as `ai.sandbox: { adapter, policy }`.
 
 ## Authentication and authorization
 
@@ -43,6 +46,7 @@ Run the app with `npm start` and the test suite with `npm test`.
 
 - Import `FakeModelProvider`, `FakeHarnessStorage`, `FakeSandbox`, and `FakeLogger` from `@purista/harness/testing`; tests must not need provider credentials or network access.
 - Prefer `new FakeModelProvider({ strict: true })`, enqueue the exact responses, and call `assertExhausted()`.
+- Use `textReply(...)` and `objectReply(...)` for concise scripted model responses.
 - Test portable agents and workflows in a small standalone Harness graph. Test a `serviceBuilder.defineTool(...)` host tool through a mounted service instance.
 
 ## Skills

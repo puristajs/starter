@@ -7,7 +7,9 @@ This project is CLI-first. Read `purista.json`, run the project-local `purista` 
 - Framework services live under the configured `servicePath`, normally `src/service`.
 - Put service-owned Harness definitions under `src/service/<service>/v<version>/harness/{agent,workflow,tool,skill,mcp}`.
 - Export direct definitions, compose one service Harness, and call `mountHarness` once on that service builder.
-- Keep provider setup in bootstrap code. Bind the model as `ai.model`; keep storage, sandbox, and telemetry bindings there too.
+- Keep provider setup in bootstrap code. Bind every application-chosen alias in
+  the exact `ai.models` map; keep storage, `ai.concurrency: { runs, modelCalls
+  }`, `ai.sandbox: { adapter, policy }`, and telemetry bindings there too.
 - Keep `src/definitions.ts` as the static service-builder inventory.
 
 ## Artifact creation
@@ -29,14 +31,28 @@ npm run add:mcp -- <name> --service <serviceName> --service-version <version>
 ## Harness rules
 
 - Direct definitions use lower camel case IDs. Agents and workflows explicitly list their allowed target addresses.
-- A command uses `canInvokeAgent(serviceName, serviceVersion, agent.contract)` before calling the matching `context.agent` address.
+- Bind a root with `serviceBuilder.harnessTarget(agent.contract)`, then declare
+  `canInvokeAgent(target)` before calling the matching `context.agent` address.
+  The call crosses EventBridge even in one process.
+- Define published-root business policy with
+  `serviceBuilder.defineHarnessPolicy(definition, { agents, workflows })`.
+  Guards authorize business access; do not add a `targets` wrapper.
 - A service host tool is created with `serviceBuilder.defineTool(...)` and tested through a mounted service. Only portable definitions get standalone Harness tests.
-- Use command, stream, and queue projections for Framework delivery. The UI stream projection uses the AI SDK UI message stream v1 protocol and forwards cancellation and approval resume.
+- Use command, stream, and queue projections for Framework delivery. The UI
+  stream projection uses AI SDK UI Message Stream v1. It derives the Harness
+  session ID after authentication and forwards cancellation and approval
+  continuation through the published adapter helpers.
+- Continue interrupted work with `target.resume(descriptor).run(options)` or
+  `.stream(options)`. Do not resend the original input or add `resume` to fresh
+  invocation options.
 - `ProtectMiddleware` owns HTTP authentication. Business guards and target policies own authorization.
 
 ## Credential-free tests
 
-Use `FakeModelProvider`, `FakeHarnessStorage`, `FakeSandbox`, and `FakeLogger` from `@purista/harness/testing`. Queue deterministic responses, use strict fakes, and assert that fixtures are exhausted. Tests must never depend on a provider token or network call.
+Use `FakeModelProvider`, `FakeHarnessStorage`, `FakeSandbox`, and `FakeLogger`
+from `@purista/harness/testing`. Build concise fixtures with `textReply(...)`
+and `objectReply(...)`, use strict fakes, and assert that fixtures are
+exhausted. Tests must never depend on a provider token or network call.
 
 ## General guardrails
 
