@@ -18,7 +18,7 @@ The official documentation can be found at **[purista.dev](https://purista.dev)*
 Every agent declares an application-chosen model alias, and startup binds the
 exact key under `ai.models`. Harness reserves no alias. Add optional runtime
 ports only when needed: `ai.concurrency: { runs, modelCalls }` controls local
-execution admission, while `ai.sandbox: { adapter, policy }` keeps execution
+execution concurrency, while `ai.sandbox: { adapter, policy }` keeps execution
 infrastructure and deployment sharing consent together.
 
 This template installs `@purista/cli` as a dev dependency. Prefer the local package scripts so the CLI version matches the project.
