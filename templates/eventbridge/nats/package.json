@@ -1,6 +1,6 @@
 {
 	"dependencies": {
-		"@purista/natsbridge": "latest"
+		"@purista/natsbridge": "^4.0.0"
 	},
 	"devDependencies": {},
 	"trustedDependencies": [],

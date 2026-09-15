@@ -1,37 +1,63 @@
 # Implementation Guide
 
-This project is CLI-first. Prefer generated PURISTA artifacts over manual framework skeletons.
+This project is CLI-first. Read `purista.json`, run the project-local `purista` scripts, and edit the generated schemas, handlers, runtime bindings, and tests for the domain.
 
-## Local CLI
-- This project installs `@purista/cli` as a dev dependency. Use package scripts instead of a global `purista` binary.
-- Runtime: `node`
-- Package manager: `npm` by default; use the equivalent script runner for pnpm, yarn, or bun if you changed package manager.
-- Create services with `npm run add:service -- <name> --description "<description>"`.
-- Create commands with `npm run add:command -- <name> --service <serviceName> --service-version <version>`.
-- Run the app with `npm start`.
-- Run tests with `npm test`.
+## Structure
 
-## Project Shape
-- `purista.json` defines file casing, event casing, `servicePath`, and `agentPath`.
-- Service definitions live under `src/service` unless `purista.json` says otherwise.
-- Agent definitions live under `src/agents` unless `purista.json` says otherwise.
-- Exportable services must be included in `src/definitions.ts`.
+- Framework services live under the configured `servicePath`, normally `src/service`.
+- Put service-owned Harness definitions under `src/service/<service>/v<version>/harness/{agent,workflow,tool,skill,mcp}`.
+- Export direct definitions, compose one service Harness, and call `mountHarness` once on that service builder.
+- Keep provider setup in bootstrap code. Bind every application-chosen alias in
+  the exact `ai.models` map; keep storage, `ai.concurrency: { runs, modelCalls
+  }`, `ai.sandbox: { adapter, policy }`, and telemetry bindings there too.
+- Keep `src/definitions.ts` as the static service-builder inventory.
 
-## Artifact Creation
-- New service: `npm run add:service -- <name> --description "<description>"`
-- New command: `npm run add:command -- <name> --service <serviceName> --service-version <version>`
-- New subscription: `npm run add:subscription -- <name> --service <serviceName> --service-version <version> --event <eventName>`
-- New stream: `npm run add:stream -- <name> --service <serviceName> --service-version <version>`
-- New queue: `npm run add:queue -- <name> --service <serviceName> --service-version <version>`
-- New queue worker: `npm run add:queue-worker -- <name> --service <serviceName> --service-version <version> --queue <queueName>`
-- New agent: `npm run add:agent -- <name> --service <serviceName> --service-version <version>`
+## Artifact creation
 
-After generation, edit handlers, schemas, runtime wiring, and tests to fit the domain.
+```sh
+npm run add:service -- <name> --description "<description>"
+npm run add:command -- <name> --service <serviceName> --service-version <version>
+npm run add:subscription -- <name> --service <serviceName> --service-version <version> --event <eventName>
+npm run add:stream -- <name> --service <serviceName> --service-version <version>
+npm run add:queue -- <name> --service <serviceName> --service-version <version>
+npm run add:queue-worker -- <name> --service <serviceName> --service-version <version> --queue <queueName>
+npm run add:agent -- <name> --service <serviceName> --service-version <version>
+npm run add:workflow -- <name> --service <serviceName> --service-version <version>
+npm run add:tool -- <name> --service <serviceName> --service-version <version>
+npm run add:skill -- <name> --service <serviceName> --service-version <version>
+npm run add:mcp -- <name> --service <serviceName> --service-version <version>
+```
 
-## Guardrails
-- Do not create alternative framework folder structures.
-- Do not bypass builders for public PURISTA contracts.
-- Do not add CommonJS variants. Generated PURISTA apps are ESM-only.
+## Harness rules
+
+- Direct definitions use lower camel case IDs. Agents and workflows explicitly list their allowed target addresses.
+- Bind a root with `serviceBuilder.harnessTarget(agent.contract)`, then declare
+  `canInvokeAgent(target)` before calling the matching `context.agent` address.
+  The call crosses EventBridge even in one process.
+- Define published-root business policy with
+  `serviceBuilder.defineHarnessPolicy(definition, { agents, workflows })`.
+  Guards authorize business access; do not add a `targets` wrapper.
+- A service host tool is created with `serviceBuilder.defineTool(...)` and tested through a mounted service. Only portable definitions get standalone Harness tests.
+- Use command, stream, and queue projections for Framework delivery. The UI
+  stream projection uses AI SDK UI Message Stream v1. It derives the Harness
+  session ID after authentication and forwards cancellation and approval
+  continuation through the published adapter helpers.
+- Continue interrupted work with `target.resume(descriptor).run(options)` or
+  `.stream(options)`. Do not resend the original input or add `resume` to fresh
+  invocation options.
+- `ProtectMiddleware` owns HTTP authentication. Business guards and target policies own authorization.
+
+## Credential-free tests
+
+Use `FakeModelProvider`, `FakeHarnessStorage`, `FakeSandbox`, and `FakeLogger`
+from `@purista/harness/testing`. Build concise fixtures with `textReply(...)`
+and `objectReply(...)`, use strict fakes, and assert that fixtures are
+exhausted. Tests must never depend on a provider token or network call.
+
+## General guardrails
+
+- Keep generated apps ESM-only.
 - Keep external systems behind resources, stores, bridges, or runtime bindings.
 - Keep EventBridge and QueueBridge concerns separate.
+- Export `purista.schedules.json` before scheduler deployment. Production scheduler hosts need a shared EventBridge and a durable scheduler provider with distributed claims.
 - Keep provider packages as app-level dependencies.
